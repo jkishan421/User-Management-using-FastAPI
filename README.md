@@ -12,10 +12,6 @@ This project implements a FastAPI application for user management with CRUD oper
 
 1. Clone the repository:
 
-```bash
-git clone <repository_url>
-cd fastapi-user-management
-```
 2. Install Dependencies:
 ```bash
 pip install -r requirements.txt
