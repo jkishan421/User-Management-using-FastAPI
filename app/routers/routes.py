@@ -1,10 +1,10 @@
 from fastapi import HTTPException, Depends, status, APIRouter
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-from database import engine
-from models import User, Base
-from dto import UserCreate, UserUpdate, UserBase
-from database import get_db
+from app.database.database import engine
+from app.database.models import User, Base
+from app.request.dto import UserCreate, UserUpdate, UserBase
+from app.database.database import get_db
 
 Base.metadata.create_all(bind=engine)
 
