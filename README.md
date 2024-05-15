@@ -14,7 +14,6 @@ This project implements a FastAPI application for user management with CRUD oper
 
 ```bash
 git clone https://github.com/jkishan421/User-Management-using-FastAPI.git
-cd fastapi-user-management
 ```
 2. Install Dependencies:
 ```bash
@@ -41,5 +40,5 @@ docker run -d -p 8000:8000 fastapi-user-management
 ```
 ### API Documentation
 ```bash
-http://localhost:8000/docs
+http://localhost:8080/docs
 ```
