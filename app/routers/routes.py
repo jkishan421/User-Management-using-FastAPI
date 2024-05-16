@@ -2,8 +2,8 @@ from fastapi import HTTPException, Depends, status, APIRouter
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from app.database.database import engine
-from app.database.models import User, Base
-from app.request.dto import UserCreate, UserUpdate, UserBase
+from app.database.models import User, Base, FilePath
+from app.request.dto import UserCreate, UserUpdate, UserBase, FilePathCreate
 from app.database.database import get_db
 
 Base.metadata.create_all(bind=engine)
@@ -67,3 +67,30 @@ async def delete_user(user_id: str, db: Session = Depends(get_db)):
     db.delete(db_user)
     db.commit()
     return None
+
+
+@router.post("/{user_id}/file-paths/")
+async def create_file_path_for_user(user_id: str, file_path: FilePathCreate, db: Session = Depends(get_db)):
+    print(f"file_path : {file_path.dict()}")
+    try:
+        db_file_path = FilePath(**file_path.dict(), user_id=user_id)
+        db.add(db_file_path)
+        db.commit()
+        db.refresh(db_file_path)
+        return {"message": "File Path Created!", "data": db_file_path}
+    except IntegrityError as e:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT,
+                            detail=f"Filepath for the user already exists")
+
+
+@router.get("/{user_id}/file-paths/")
+def get_file_paths_for_user(user_id: str, retrieval_option: str = "relative", db: Session = Depends(get_db)):
+    if retrieval_option == "relative":
+        return db.query(FilePath).filter(FilePath.user_id == user_id).all()
+    elif retrieval_option == "absolute_public_url":
+        # This may involve fetching and transforming data from GCP storage service
+        pass
+    else:
+        raise HTTPException(status_code=400,
+                            detail="Invalid retrieval option. Valid options: 'relative', 'absolute_public_url'")
