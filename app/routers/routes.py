@@ -69,7 +69,7 @@ async def delete_user(user_id: str, db: Session = Depends(get_db)):
     return None
 
 
-@router.post("/{user_id}/file-paths/")
+@router.post("/{user_id}/file-paths/", status_code=status.HTTP_201_CREATED)
 async def create_file_path_for_user(user_id: str, file_path: FilePathCreate, db: Session = Depends(get_db)):
     print(f"file_path : {file_path.dict()}")
     try:
