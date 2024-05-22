@@ -36,7 +36,7 @@ docker build -t fastapi-user-management .
 ```
 2. Run the Docker container:
 ```bash
-docker run -d -p 8000:8000 fastapi-user-management
+docker run -d -p 8000:8000 /app/logging_config : /app/logs fastapi-user-management
 ```
 ### API Documentation
 ```bash
