@@ -19,11 +19,15 @@ git clone https://github.com/jkishan421/User-Management-using-FastAPI.git
 ```bash
 pip install -r requirements.txt
 ```
-3. Running the FastAPI Server:
+3. Run the Migration
+```bash
+python migrate.py
+```
+4. Run the FastAPI Server:
 ```bash
 python3 main.py
 ```
-4. Running Tests
+5. Run Tests
 ```bash
 pytest
 ```
