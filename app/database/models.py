@@ -1,26 +1,31 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import String, ForeignKey
 import uuid
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, mapped_column, Mapped
+from typing import List
+from sqlalchemy import orm
 
-Base = declarative_base()
+
+class Base(orm.DeclarativeBase):
+    """Base database model."""
+
+    id: orm.Mapped[uuid.UUID] = orm.mapped_column(
+        primary_key=True,
+        default=uuid.uuid4,
+    )
 
 
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(String(36), primary_key=True, index=True, nullable=False, unique=True,
-                default=lambda: str(uuid.uuid4()))
-    username = Column(String, unique=True, index=True)
-    email = Column(String, unique=True, index=True)
-    file_paths = relationship("FilePath", back_populates="user")
+    username: Mapped[str] = mapped_column(String, unique=True, index=True)
+    email: Mapped[str] = mapped_column(String, unique=True, index=True)
+    file_paths: Mapped[List["FilePath"]] = relationship("FilePath", back_populates="user")
 
 
 class FilePath(Base):
     __tablename__ = "file_paths"
 
-    id = Column(Integer, primary_key=True, index=True)
-    path = Column(String, unique=True)
-    user_id = Column(String, ForeignKey("users.id"))
+    path: Mapped[str] = mapped_column(String, unique=True)
+    user_id: Mapped[str] = mapped_column(String, ForeignKey("users.id"))
 
-    user = relationship("User", back_populates="file_paths")
+    user: Mapped["User"] = relationship("User", back_populates="file_paths")
